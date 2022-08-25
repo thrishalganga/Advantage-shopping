@@ -1,0 +1,239 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 4,
+        "name": "login with valid credential",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 308026800,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "Open the browser",
+            "match": {
+              "location": "Com.Automation.StepDef.Regsteps.open_the_browser()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 1812862400,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "Open Createnewaccount",
+            "match": {
+              "location": "Com.Automation.StepDef.Regsteps.open_createnewaccount()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 618280000,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "Enter valid Username \"Advantage.Demo\" and Password \"12345Asdf\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "\"Advantage.Demo\"",
+                  "offset": 21
+                },
+                {
+                  "val": "\"12345Asdf\"",
+                  "offset": 51
+                }
+              ],
+              "location": "Com.Automation.StepDef.Searchsteps.enter_valid_username_and_password(java.lang.String,java.lang.String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 70011300,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "execute the login successfully",
+            "match": {
+              "location": "Com.Automation.StepDef.Searchsteps.execute_the_login_successfully()"
+            },
+            "keyword": "Then "
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2022-08-25T06:58:44.009Z",
+        "before": [
+          {
+            "result": {
+              "duration": 2078665500,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Com.Automation.StepDef.hooks.precondition()"
+            }
+          }
+        ],
+        "line": 10,
+        "name": "shipping with valid credential",
+        "description": "",
+        "id": "validation-of-reg-scenario;shipping-with-valid-credential",
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 3898222800,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "open cart",
+            "match": {
+              "location": "Com.Automation.StepDef.ShippingSteps.open_cart()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 9408597900,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "Enter Valid Shipping address",
+            "match": {
+              "location": "Com.Automation.StepDef.ShippingSteps.enter_valid_shipping_address()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 40001800,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "save shipping details successfully",
+            "match": {
+              "location": "Com.Automation.StepDef.ShippingSteps.save_shipping_details_successfully()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoketest"
+          }
+        ]
+      }
+    ],
+    "name": "Validation of Reg scenario",
+    "description": "",
+    "id": "validation-of-reg-scenario",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/Feature/Shipping.feature",
+    "tags": []
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "start_timestamp": "2022-08-25T06:59:02.291Z",
+        "before": [
+          {
+            "result": {
+              "duration": 1833391500,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Com.Automation.StepDef.hooks.precondition()"
+            }
+          }
+        ],
+        "line": 12,
+        "name": "login with valid credential",
+        "description": "",
+        "id": "validation-of-reg-scenario;login-with-valid-credential;;2",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 305691500,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "Open the browser",
+            "match": {
+              "location": "Com.Automation.StepDef.Regsteps.open_the_browser()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 2882694600,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "Open Createnewaccount",
+            "match": {
+              "location": "Com.Automation.StepDef.Regsteps.open_createnewaccount()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 601621200,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "Enter valid username \"Username\" and Password \"Password\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "\"Username\"",
+                  "offset": 21
+                },
+                {
+                  "val": "\"Password\"",
+                  "offset": 45
+                }
+              ],
+              "location": "Com.Automation.StepDef.Loginsteps.enter_valid_username_and_password(java.lang.String,java.lang.String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 53998200,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "execute login successfully",
+            "match": {
+              "location": "Com.Automation.StepDef.Loginsteps.execute_login_successfully()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoketest"
+          }
+        ]
+      }
+    ],
+    "name": "Validation of Reg scenario",
+    "description": "",
+    "id": "validation-of-reg-scenario",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/Feature/login.feature",
+    "tags": []
+  }
+]
