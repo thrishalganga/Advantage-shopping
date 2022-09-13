@@ -23,14 +23,17 @@ public class Regsteps {
 		 rp.icon();
 	}
 
-	@When("Enter valid username and Mail")
-	public void enter_valid_username_and_mail() {
+	@When("Enter valid username and Mail and Password and Confirmpassword")
+	public void enter_valid_username_and_mail_and_password_and_confirmpassword() {
 		 String name1=ExcelData.getdata("C:\\Users\\thrishal.g\\eclipse-workspace\\AdvantageShoppingcucumber\\src\\test\\resources\\Data\\data_advcucumber.xlsx", "Sheet1", 1, 0);
 		 String mail=ExcelData.getdata("C:\\Users\\thrishal.g\\eclipse-workspace\\AdvantageShoppingcucumber\\src\\test\\resources\\Data\\data_advcucumber.xlsx", "Sheet1", 1, 1);
-	   
+		 String Password=ExcelData.getdata("C:\\Users\\thrishal.g\\eclipse-workspace\\AdvantageShoppingcucumber\\src\\test\\resources\\Data\\data_advcucumber.xlsx", "Sheet1", 1, 2);
+		 String ConfirmPassword=ExcelData.getdata("C:\\Users\\thrishal.g\\eclipse-workspace\\AdvantageShoppingcucumber\\src\\test\\resources\\Data\\data_advcucumber.xlsx", "Sheet1", 1, 3);
 		rp.NewAccount();
 		rp.UserName(name1);
 		rp.Email(mail);
+		rp.Password(Password);
+		rp.ConfirmPassword(ConfirmPassword);
 	}
 
 	    

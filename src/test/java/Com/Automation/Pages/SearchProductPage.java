@@ -17,7 +17,7 @@ public class SearchProductPage extends Basepage {
 	@FindBy(xpath="//p[@class='roboto-regular ng-binding']")
 	private WebElement productCat;
 	
-	@FindBy(xpath="//span[@title='BLACK']")
+	@FindBy(xpath="//span[@title='PURPLE']")
 	private WebElement color;
 	
 	@FindBy(xpath="//div[@class='plus']")
@@ -42,6 +42,7 @@ public class SearchProductPage extends Basepage {
 	public void inputProductName(String str)
 	{
 		productName.sendKeys(str);
+		
 	}
 	public void clickPrdCat()
 	{
