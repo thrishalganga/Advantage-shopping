@@ -3,7 +3,7 @@ public void validateFilterResponse() {
 
         String filterType = GlobalCache.get("Filter").toString();
 
-        List<Map<String, Object>> componentsInfo = response.jsonPath().get("componentsInfo.content");
+        List<Map<String, Object>> componentsInfo = response.jsonPath().getList("componentsInfo.content");
         Map<String, Map<String, Object>> componentMap = convertListToMap(componentsInfo);
 
         if (componentMap != null) {
@@ -48,3 +48,6 @@ public void validateFilterResponse() {
             System.out.println("Genre field not found in data.");
         }
     }
+
+    // Add similar methods for other filter types if needed
+}
