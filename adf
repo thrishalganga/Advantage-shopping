@@ -1,89 +1,1 @@
- @Given("set Tokenized header with filters")
-    public void set_Tokenized_header_with_filters(List<String> filters) {
-        Map<String, String> headers = createBaseTokenizedHeader();
-        
-        for (String filterType : filters) {
-            headers.put(filterType, getFilterValue(filterType));
-            GlobalCache.setScenarioValue("Filter", filterType);
-
-            commonSteps.apiInfo.setTokenizedHeader(headers);
-            commonSteps.api_call_is_made_for("Filmography");
-        }
-    }
-
-    @Then("validate the filter response")
-    public void validate_the_filter_response() {
-        validateFilterResponse();
-    }
-
-    private Map<String, String> createBaseTokenizedHeader() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("authorization", GlobalCache.get("authtoken").toString());
-        headers.put("accountid", GlobalCache.get("accountIdHash").toString());
-        headers.put("dt", GlobalCache.get("dt").toString());
-        headers.put("x-transaction-id", UUID.randomUUID().toString());
-        headers.put("portalId", GlobalCache.get("prt").toString());
-        headers.put("pt", GlobalCache.get("pt").toString());
-        headers.put("av", "6.0");
-        headers.put("rv", "6.0");
-        headers.put("Content-Type", "application/json");
-        headers.put("did", GlobalCache.get("deviceIdHash").toString());
-        return headers;
-    }
-
-    private String getFilterValue(String filterType) {
-        if ("genre".equals(filterType)) {
-            return "Action;Horror";
-        } else if ("forrent".equals(filterType)) {
-            return "true";
-        } else {
-            return "";
-        }
-    }
-
-    public void validateFilterResponse() {
-        Response response = (Response) GlobalCache.get("API_RESPONSE");
-
-        String filterType = GlobalCache.get("Filter").toString();
-
-        List<Map<String, Object>> componentsInfo = response.jsonPath().getList("componentsInfo");
-
-        if (componentsInfo != null) {
-            for (Map<String, Object> componentInfo : componentsInfo) {
-                List<Map<String, Object>> contentList = (List<Map<String, Object>>) componentInfo.get("content");
-
-                if (contentList != null) {
-                    for (Map<String, Object> content : contentList) {
-                        Map<String, Object> data = (Map<String, Object>) content.get("data");
-
-                        // Perform validation based on the filter type
-                        switch (filterType) {
-                            case "genre":
-                                validateGenreFilter(data);
-                                break;
-                            // Add cases for other filter types as needed
-                            default:
-                                // Handle other filter types if necessary
-                        }
-                    }
-                }
-            }
-        } else {
-            System.out.println("ComponentsInfo list is null. Unable to validate the filter response.");
-        }
-    }
-
-    private void validateGenreFilter(Map<String, Object> data) {
-        // Extract and validate the "genre" field from the data
-        if (data.containsKey("genre")) {
-            List<String> genres = (List<String>) data.get("genre");
-
-            // Perform your validation logic here
-            // For example, check if genres contains the expected values
-
-            System.out.println("Validating genre filter: " + genres);
-        } else {
-            System.out.println("Genre field not found in data.");
-        }
-    }
-}
+@Given("set Tokenized header with filters") public void set_Tokenized_header_with_filters(List<String> filters) {     Map<String, String> headers = createBaseTokenizedHeader();      for (String filterType : filters) {         headers.put(filterType, getFilterValue(filterType));         GlobalCache.setScenarioValue("Filter", filterType);          commonSteps.apiInfo.setTokenizedHeader(headers);      } }  @Then("validate the filter response") public void validate_the_filter_response() {     validateFilterResponse(); }  private Map<String, String> createBaseTokenizedHeader() {     Map<String, String> headers = new HashMap<>();     headers.put("authorization", GlobalCache.get("authtoken").toString());     headers.put("accountid", GlobalCache.get("accountIdHash").toString());     headers.put("dt", GlobalCache.get("dt").toString());     headers.put("x-transaction-id", UUID.randomUUID().toString());     headers.put("portalId", GlobalCache.get("prt").toString());     headers.put("pt", GlobalCache.get("pt").toString());     headers.put("av", "6.0");     headers.put("rv", "6.0");     headers.put("Content-Type", "application/json");     headers.put("did", GlobalCache.get("deviceIdHash").toString());     return headers; }  private String getFilterValue(String filterType) {     if ("genre".equals(filterType)) {         return "Action;Horror";     } else if ("forrent".equals(filterType)) {         return "true";     } else {         return "";     } }  public void validateFilterResponse() {     Response response = (Response) GlobalCache.get("API_RESPONSE");      String filterType = GlobalCache.get("Filter").toString();      List<Map<String, Object>> componentsInfo = response.jsonPath().getList("componentsInfo");      if (componentsInfo != null) {         for (Map<String, Object> componentInfo : componentsInfo) {             List<Map<String, Object>> contentList = (List<Map<String, Object>>) componentInfo.get("content");              if (contentList != null) {                 for (Map<String, Object> content : contentList) {                     Map<String, Object> data = (Map<String, Object>) content.get("data");                      // Perform validation based on the filter type                     switch (filterType) {                         case "genre":                             validateGenreFilter(data);                             break;                         // Add cases for other filter types as needed                         default:                             // Handle other filter types if necessary                     }                 }             }         }     } else {         System.out.println("ComponentsInfo list is null. Unable to validate the filter response.");     } }  private void validateGenreFilter(Map<String, Object> data) {     // Extract and validate the "genre" field from the data     if (data.containsKey("genre")) {         List<String> genres = (List<String>) data.get("genre");          // Perform your validation logic here         // For example, check if genres contains the expected values          System.out.println("Validating genre filter: " + genres);     } else {         System.out.println("Genre field not found in data.");     } } 
