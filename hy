@@ -1,1 +1,15 @@
-@Filmography1 @img @PRODimg @PILOTimg @contractValidation @fclcastandcrew Scenario Outline: Validate the Filmography Filter: <Filter>   Given an api call for "Filmography" with data     | Id | 219616 |     | pi | 0      |     | ps | 20     |   And set Tokenized header with filters     |genre|     |forrent|   When api call is made for "Filmography"   Then validate the filter response    Examples:   |Filter|   |genre     |   |forrent   |
+@Given("set Tokenized header with filters")
+public void set_Tokenized_header_with_filters(List<String> filters) {
+    for (String filterType : filters) {
+        Map<String, String> headers = createBaseTokenizedHeader();
+        headers.put(filterType, getFilterValue(filterType));
+        GlobalCache.setScenarioValue("Filter", filterType);
+
+        commonSteps.apiInfo.setTokenizedHeader(headers);
+    }
+}
+
+@Then("validate the filter response")
+public void validate_the_filter_response() {
+    validateFilterResponse();
+}
