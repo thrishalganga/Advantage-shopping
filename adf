@@ -1,38 +1,29 @@
-public void validateFilterResponse() {
+    public void validateFilterResponse() {
         Response response = (Response) GlobalCache.get("API_RESPONSE");
 
         String filterType = GlobalCache.get("Filter").toString();
 
         List<Map<String, Object>> componentsInfo = response.jsonPath().getList("componentsInfo.content");
-        Map<String, Map<String, Object>> componentMap = convertListToMap(componentsInfo);
 
-        if (componentMap != null) {
-            for (Map.Entry<String, Map<String, Object>> entry : componentMap.entrySet()) {
-                Map<String, Object> data = entry.getValue();
+        if (componentsInfo != null) {
+            for (Map<String, Object> component : componentsInfo) {
+                if (component.containsKey("data")) {
+                    Map<String, Object> data = (Map<String, Object>) component.get("data");
 
-                // Perform validation based on the filter type
-                switch (filterType) {
-                    case "genre":
-                        validateGenreFilter(data);
-                        break;
-                    // Add cases for other filter types as needed
-                    default:
-                        // Handle other filter types if necessary
+                    // Perform validation based on the filter type
+                    switch (filterType) {
+                        case "genre":
+                            validateGenreFilter(data);
+                            break;
+                        // Add cases for other filter types as needed
+                        default:
+                            // Handle other filter types if necessary
+                    }
                 }
             }
         } else {
-            System.out.println("Component map is null. Unable to validate the filter response.");
+            System.out.println("ComponentsInfo list is null. Unable to validate the filter response.");
         }
-    }
-
-    private Map<String, Map<String, Object>> convertListToMap(List<Map<String, Object>> list) {
-        Map<String, Map<String, Object>> resultMap = new HashMap<>();
-
-        for (int i = 0; i < list.size(); i++) {
-            resultMap.put("element" + i, list.get(i));
-        }
-
-        return resultMap;
     }
 
     private void validateGenreFilter(Map<String, Object> data) {
