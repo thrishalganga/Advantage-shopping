@@ -6,7 +6,7 @@ public void set_Tokenized_header_with_filters(List<String> filters) {
         GlobalCache.setScenarioValue("Filter", filterType);
 
         commonSteps.apiInfo.setTokenizedHeader(headers);
-    }
+    }12
 }
 
 @Then("validate the filter response")
