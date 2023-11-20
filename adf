@@ -1,1 +1,192 @@
-@Given("set Tokenized header with filters") public void set_Tokenized_header_with_filters(List<String> filters) {     Map<String, String> headers = createBaseTokenizedHeader();      for (String filterType : filters) {         headers.put(filterType, getFilterValue(filterType));         GlobalCache.setScenarioValue("Filter", filterType);          commonSteps.apiInfo.setTokenizedHeader(headers);      } }  @Then("validate the filter response") public void validate_the_filter_response() {     validateFilterResponse(); }  private Map<String, String> createBaseTokenizedHeader() {     Map<String, String> headers = new HashMap<>();     headers.put("authorization", GlobalCache.get("authtoken").toString());     headers.put("accountid", GlobalCache.get("accountIdHash").toString());     headers.put("dt", GlobalCache.get("dt").toString());     headers.put("x-transaction-id", UUID.randomUUID().toString());     headers.put("portalId", GlobalCache.get("prt").toString());     headers.put("pt", GlobalCache.get("pt").toString());     headers.put("av", "6.0");     headers.put("rv", "6.0");     headers.put("Content-Type", "application/json");     headers.put("did", GlobalCache.get("deviceIdHash").toString());     return headers; }  private String getFilterValue(String filterType) {     if ("genre".equals(filterType)) {         return "Action;Horror";     } else if ("forrent".equals(filterType)) {         return "true";     } else {         return "";     } }  public void validateFilterResponse() {     Response response = (Response) GlobalCache.get("API_RESPONSE");      String filterType = GlobalCache.get("Filter").toString();      List<Map<String, Object>> componentsInfo = response.jsonPath().getList("componentsInfo");      if (componentsInfo != null) {         for (Map<String, Object> componentInfo : componentsInfo) {             List<Map<String, Object>> contentList = (List<Map<String, Object>>) componentInfo.get("content");              if (contentList != null) {                 for (Map<String, Object> content : contentList) {                     Map<String, Object> data = (Map<String, Object>) content.get("data");                      // Perform validation based on the filter type                     switch (filterType) {                         case "genre":                             validateGenreFilter(data);                             break;                         // Add cases for other filter types as needed                         default:                             // Handle other filter types if necessary                     }                 }             }         }     } else {         System.out.println("ComponentsInfo list is null. Unable to validate the filter response.");     } }  private void validateGenreFilter(Map<String, Object> data) {     // Extract and validate the "genre" field from the data     if (data.containsKey("genre")) {         List<String> genres = (List<String>) data.get("genre");          // Perform your validation logic here         // For example, check if genres contains the expected values          System.out.println("Validating genre filter: " + genres);     } else {         System.out.println("Genre field not found in data.");     } } 
+It seems like the provided code has formatting issues, and some parts may be missing or incomplete. Additionally, there are syntax errors in some places.
+
+Here is a cleaner version of the code with proper formatting:
+
+```java
+public class CastnCrewAssertionsIMG {
+
+    private CommonSteps commonSteps;
+
+    public CastnCrewAssertionsIMG(CommonSteps commonSteps) {
+        this.commonSteps = commonSteps;
+    }
+
+    @And("validateResponse castNCrew response")
+    public void validateResponseCastNCrewResponse() {
+        Response apiResponse = (Response) GlobalCache.get(AppConstants.API_RESPONSE);
+        GlobalCache.setFeatureValue("result", apiResponse.jsonPath().getMap("$"));
+        Map<String, Object> result = (Map<String, Object>) GlobalCache.get("result");
+        List<Map<String, Object>> componentsInfo = (ArrayList<Map<String, Object>>) result.get("componentsInfo");
+
+        List<Map<String, Object>> content = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> apiWebServiceUrl = new HashMap<>();
+        Map<String, Object> airingInfo = new HashMap<>();
+
+        for (Map<String, Object> componentInfo : componentsInfo) {
+            int totalRecords = Integer.parseInt(componentInfo.get("totalRecords").toString());
+            CommonAssertions.nullCheck(componentInfo, "totalRecords", "cacheExpiresin");
+
+            content = (List<Map<String, Object>>) componentInfo.get("content");
+
+            for (Map<String, Object> contentMap : content) {
+                CommonAssertions.nullCheck(contentMap, "id", "api", "title", "posterId", "webRouteText", "data");
+
+                data = (Map<String, Object>) contentMap.get("data");
+                airingInfo = (Map<String, Object>) data.get("airingInfo");
+                apiWebServiceUrl = (Map<String, Object>) contentMap.get("api");
+
+                CommonAssertions.nullCheck(data, "id", "rating", "idType", "bgPosterId");
+            }
+        }
+    }
+
+    @Then("validate castAndCrew Rail response for {string}")
+    public void validateCastAndCrewRailResponseFor(String assetType) {
+        Response apiResponse = (Response) GlobalCache.get(AppConstants.API_RESPONSE);
+        GlobalCache.setFeatureValue("result", apiResponse.jsonPath().getMap("$"));
+        Map<String, Object> result = (Map<String, Object>) GlobalCache.get("result");
+        List<Map<String, Object>> componentsInfo = (ArrayList<Map<String, Object>>) result.get("componentsInfo");
+
+        List<Map<String, Object>> content = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> apiWebServiceUrl = new HashMap<>();
+        Map<String, Object> airingInfo = new HashMap<>();
+
+        for (Map<String, Object> componentInfo : componentsInfo) {
+            int totalRecords = Integer.parseInt(componentInfo.get("totalRecords").toString());
+            CommonAssertions.nullCheck(componentInfo, "totalRecords", "cacheExpiresin");
+
+            content = (List<Map<String, Object>>) componentInfo.get("content");
+
+            for (Map<String, Object> contentMap : content) {
+                CommonAssertions.nullCheck(contentMap, "id", "api", "title", "posterId", "webRouteText", "data");
+
+                data = (Map<String, Object>) contentMap.get("data");
+                airingInfo = (Map<String, Object>) data.get("airingInfo");
+                apiWebServiceUrl = (Map<String, Object>) contentMap.get("api");
+
+                CommonAssertions.nullCheck(data, "id", "idType");
+            }
+        }
+    }
+
+    @Given("set Tokenized header with filters")
+    public void setTokenizedHeaderWithFilters(List<String> filters) {
+        Map<String, String> headers = createBaseTokenizedHeader();
+
+        for (String filterType : filters) {
+            headers.put(filterType, getFilterValue(filterType));
+            GlobalCache.setScenarioValue("Filter", filterType);
+
+            commonSteps.apiInfo.setTokenizedHeader(headers);
+        }
+    }
+
+    @Then("validate the filter response")
+    public void validateFilterResponse() {
+        Response response = (Response) GlobalCache.get("API_RESPONSE");
+        String filterType = GlobalCache.get("Filter").toString();
+        List<Map<String, Object>> componentsInfo = response.jsonPath().getList("componentsInfo");
+
+        if (componentsInfo != null) {
+            for (Map<String, Object> componentInfo : componentsInfo) {
+                List<Map<String, Object>> contentList = (List<Map<String, Object>>) componentInfo.get("content");
+
+                if (contentList != null) {
+                    for (Map<String, Object> content : contentList) {
+                        Map<String, Object> data = (Map<String, Object>) content.get("data");
+
+                        switch (filterType) {
+                            case "genre":
+                                validateGenreFilter(data);
+                                break;
+                            case "movies":
+                                validateMovieFilter(content);
+                                break;
+                            case "tvshows":
+                                validateTvShowsFilter(content);
+                                break;
+                            case "ages":
+                                validateAgesFilter(data);
+                                break;
+                            default:
+                                // Handle other cases if needed
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("ComponentsInfo list is null. Unable to validate the filter response.");
+        }
+    }
+
+    private Map<String, String> createBaseTokenizedHeader() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", GlobalCache.get("ot
+
+oken").toString());
+        headers.put("pocountid", GlobalCache.get("accountidHash").toString());
+        headers.put("d!", System.getProperty("DT"));
+
+        if (System.getProperty("DID") == null) {
+            headers.put("did", "TestDeviceServices_PA");
+        } else {
+            headers.put("did", System.getProperty("DID"));
+        }
+
+        headers.put("portalId", GlobalCache.get("PortalId").toString());
+        headers.put("status", "0");
+        headers.put("pt", "STREAMTV");
+        headers.put("ry", "4.0");
+        headers.put("Content-Type", "application/json");
+
+        return headers;
+    }
+
+    private String getFilterValue(String filterType) {
+        if ("genre".equals(filterType)) {
+            return "Action Horror";
+        } else if ("movies".equals(filterType) || "tvshows".equals(filterType)) {
+            return "True";
+        } else if ("ages".equals(filterType)) {
+            return "Age16andunder";
+        } else {
+            return "";
+        }
+    }
+
+    private void validateGenreFilter(Map<String, Object> data) {
+        if (data.containsKey("genre")) {
+            List<String> genres = (List<String>) data.get("genre");
+            Assert.assertTrue("The genre should contain given filter",
+                    genres.contains("Action") || genres.contains("Horror"));
+        }
+    }
+
+    private void validateMovieFilter(Map<String, Object> content) {
+        if (content.containsKey("objectType")) {
+            String objectType = (String) content.get("objectType");
+            Assert.assertTrue("The objectType should be Movie", objectType.contains("Movie"));
+        }
+    }
+
+    private void validateTvShowsFilter(Map<String, Object> content) {
+        if (content.containsKey("objectType")) {
+            String objectType = (String) content.get("objectType");
+            Assert.assertTrue("The objectType should be Series",
+                    objectType.contains("Series") || objectType.contains("Program"));
+        }
+    }
+
+    private void validateAgesFilter(Map<String, Object> data) {
+        if (data.containsKey("ageRating")) {
+            String ageRating = data.get("ageRating").toString();
+            int age = Integer.parseInt(ageRating);
+            Assert.assertTrue("The Age rating should be under 16", age <= 16);
+        }
+    }
+}
+```
+
+Make sure to adjust the package names, import statements, and any missing or incomplete parts according to your project structure.
