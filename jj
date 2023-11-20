@@ -1,43 +1,83 @@
-public void validateFilterResponse() {
-        APIFormation apiFormation = apiCaller.getApiFormation();
-        String filterType = GlobalCache.getScenarioValue("Filter").toString();
+public
 
-        if (apiFormation != null) {
-            List<Map<String, Object>> componentsInfo = apiFormation.getComponentsInfo();
+void setTokenizedHeader(Map<String, String> headers)(
 
-            for (Map<String, Object> component : componentsInfo) {
-                if (component.containsKey("data")) {
-                    Map<String, Object> data = (Map<String, Object>) component.get("data");
+StringBuilder inputStr = new StringBuilder();
 
-                    // Perform validation based on the filter type
-                    switch (filterType) {
-                        case "genre":
-                            validateGenreFilter(data);
-                            break;
-                        case "forrent":
-                            validateForRentFilter(data);
-                            break;
-                        // Add cases for other filter types as needed
-                        default:
-                            // Handle other filter types if necessary
-                    }
-                }
-            }
-        } else {
-            System.out.println("APIFormation is null. Unable to validate the filter response.");
-        }
-    }
+CryptUtil crypt= new CryptUtil();
 
-    private void validateGenreFilter(Map<String, Object> data) {
-        // Extract and validate the "genre" field from the data
-        if (data.containsKey("genre")) {
-            List<String> genres = (List<String>) data.get("genre");
-            
-            // Perform your validation logic here
-            // For example, check if genres contains the expected values
-            
-            System.out.println("Validating genre filter: " + genres);
-        } else {
-            System.out.println("Genre field not found in data.");
-        }
-    }
+for (String key: requestParams.keySet()){
+
+inputStr = inputStr.append(key).append("=").append(requestParams.get(key));
+
+String token = null;
+
+String rsa Token = null;
+
+if(null! headers.get("tokenType"))
+
+try{
+
+RSAUtil rsaUtil = new RSAUtil();
+
+inputStr = new StringBuilder();
+
+Calendar calendar = Calendar.getInstance();
+
+calendar.add(Calendar.HOUR,12);
+
+Date today = calendar.getTime();
+
+SimpleDateFormat crunchifyFormat = new SimpleDateFormat("MMM dd yyyy HH:mm:ss.SSS zzz");
+
+String currentTime = crunchifyFormat.format(today); Date date = crunchifyFormat.parse(currentTime);
+
+long epochTime = date.getTime();
+
+inputStr.append(headers.get("dt")).append(";").append(headers.get("pt")).append(";").append(new tringBuilder(headers.get("did")).reverse().toString()).append(";").append((Integer.valueOf(getCurrentDateinGMT()) <<4)).append(";").append(epochTime);
+
+System.out.println(inputStr);
+
+token = sha256 (inputStr.toString());
+
+System.out.println(token);
+
+if(System.getProperty("confPath").contains("PROD"))
+
+rsaToken = new String((rsaUtil.encrypt(rsaUtil.generateKey(crypt.getValue("$$SecretKeyDevicePRDSS")), token+","+epochTime)));
+
+else rsaToken = new String((rsaUtil.encrypt(rsaUtil.generateKey(crypt.getValue("$$SecretKey Device$S")), token+";"+epochTime)));
+
+String tokenName = headers.get("TokenName");
+
+apiRequest.headers(headers );
+
+catch (Exception e){
+
+}
+
+}
+
+e.printStackTrace();
+
+Assert.fail("Error in Token Generation: \n"+e.getMessage());
+
+String tokenName = headers.get("TokenName");
+
+if (null != tokenName){
+
+headers.put(tokenName, rsaToken);
+
+headers.remove("TokenName");
+
+} headers.remove("tokenType");
+
+GlobalCache.setGlobalValue("rsaTokenVal",rsaToken);
+
+apiRequest.headers(headers);
+
+this.apiHeaders = headers;
+
+20 November 2013 at 731 м
+
+}
